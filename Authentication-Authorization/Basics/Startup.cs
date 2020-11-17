@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Basics.AuthorizationRequirements;
+using Basics.CustomPolictyProvider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,7 +50,8 @@ namespace Basics
             });
 
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
-
+            services.AddScoped<IAuthorizationHandler, SecurityLevelRequirementHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
             services.AddControllersWithViews();
         }
 

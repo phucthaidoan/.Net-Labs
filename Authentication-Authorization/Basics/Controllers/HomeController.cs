@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Basics.CustomPolictyProvider;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,18 @@ namespace Basics.Controllers
             return View();
         }
 
+        [SecurityAuthorize(10)]
+        public IActionResult SecretHigherLevel()
+        {
+            return View("Secret");
+        }
+
+        [SecurityAuthorize(5)]
+        public IActionResult SecretLevel()
+        {
+            return View("Secret");
+        }
+
         public IActionResult Authenticate()
         {
             var grandmaClaims = new List<Claim>()
@@ -43,6 +56,7 @@ namespace Basics.Controllers
                 new Claim(ClaimTypes.Email, "Bob@gmail.com"),
                 new Claim(ClaimTypes.DateOfBirth, "11/11/2000"),
                 new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(DynamicPolicies.SecurityLevel, "7"),
                 new Claim("Grandma.Says", "Helloworld")
             };
 
